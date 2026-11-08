@@ -2,7 +2,7 @@ FROM node:26-alpine as builder
 WORKDIR /app
 COPY ./package.json .
 COPY ./yarn.lock .
-RUN node --version && npm --version
+RUN node --version && npm --version && yarn --version
 RUN yarn install
 COPY . .
 ARG OMDB_API_KEY
