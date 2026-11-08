@@ -1,5 +1,7 @@
 FROM node:26-alpine as builder
 WORKDIR /app
+#Install Yarn globally
+Run npm install -g yarn@1.22.22
 COPY ./package.json .
 COPY ./yarn.lock .
 RUN node --version && npm --version && yarn --version
