@@ -81,7 +81,7 @@
 ## Install with Docker
 
 ```sh
-docker build --build-arg TMDB_V3_API_KEY=your_api_key_here -t netflix-clone .
+docker build --build-arg OMDB_API_KEY=your_api_key_here -t netflix-clone .
 
 docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
 ```
@@ -93,3 +93,128 @@ docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
 - Replace bundler([Vite](https://vitejs.dev/guide)) with [Turbopack](https://turbo.build/pack/docs/why-turbopack). Turbopack is introduced in Next.js conf recently. It's very fast but it's nor ready to use right now. it just support Next.js, and they plan to support all others as soon as possible. so if it's ready to use, replace [Vite](https://vitejs.dev/guide) with [Turbopack](https://turbo.build/pack/docs/why-turbopack).
 - Add accessibilities for better UX.
 - Add Tests.
+📊 Monitoring & Observability
+
+This project integrates Prometheus, Node Exporter, and Grafana to monitor infrastructure and application performance.
+
+Monitoring Tools
+
+- Prometheus: Collects and stores time-series metrics.
+- Node Exporter: Exposes Linux system metrics such as CPU, memory, disk, and network usage.
+- Grafana: Visualizes infrastructure metrics through interactive dashboards.
+- Jenkins Monitoring: Tracks Jenkins performance and health metrics.
+
+Monitoring Configuration
+
+The "monitoring/" directory contains:
+
+- "prometheus.yml.example" – Prometheus scrape configuration.
+- "node-exporter-dashboard.json" – Exported Grafana dashboard for Linux system monitoring.
+
+Key Metrics
+
+- CPU utilization
+- Memory usage
+- Disk utilization
+- Network traffic
+- Jenkins health and performance
+
+Monitoring Architecture
+
+Prometheus → Node Exporter / Jenkins → Grafana Dashboards
+
+⚙️ CI/CD Pipeline
+
+The project uses Jenkins to automate the application build, security analysis, Docker image creation, and deployment.
+
+Pipeline Stages
+
+1. Clean Workspace: Removes previous build files.
+2. Git Checkout: Retrieves source code from GitHub.
+3. SonarQube Analysis: Performs static code quality analysis.
+4. Quality Gate: Checks the SonarQube quality gate.
+5. Dependency Installation: Installs application dependencies using npm.
+6. OWASP Dependency Check: Scans project dependencies for known vulnerabilities.
+7. Trivy Filesystem Scan: Scans the project filesystem.
+8. Docker Build & Push: Builds the Docker image and pushes it to Docker Hub.
+9. Trivy Image Scan: Scans the Docker image for vulnerabilities.
+10. Kubernetes Deployment: Deploys the application using Kubernetes deployment and service manifests.
+11. Email Notification: Sends pipeline build notifications.
+
+Technologies Used
+
+- Jenkins
+- Git & GitHub
+- Docker & Docker Hub
+- SonarQube
+- OWASP Dependency-Check
+- Trivy
+- Kubernetes
+- Prometheus
+- Grafana
+- AWS EC2
+
+AWS Infrastructure Architecture
+
+This project uses four AWS EC2 instances to manage CI/CD automation, monitoring, and Kubernetes deployment.
+
+Infrastructure Components
+
+EC2 Instance| Installed Tools| Purpose
+EC2 1 – CI/CD Server| Jenkins, Docker, SonarQube| Build, code analysis, security scanning, and deployment automation
+EC2 2 – Monitoring Server| Prometheus, Grafana| Infrastructure monitoring and visualization
+EC2 3 – Kubernetes Master| Kubernetes Control Plane| Manages the Kubernetes cluster
+EC2 4 – Kubernetes Worker| Kubernetes Worker Node| Runs the Netflix Clone application pods
+
+Total: 4 AWS EC2 instances.
+
+Deployment Workflow
+
+1. Developer pushes application code to GitHub.
+2. Jenkins fetches the source code.
+3. SonarQube performs code quality analysis.
+4. Docker builds the application image.
+5. Security scanning tools check the application and image.
+6. The Docker image is pushed to Docker Hub.
+7. Jenkins deploys the application to the Kubernetes cluster.
+8. Prometheus collects monitoring metrics.
+9. Grafana displays monitoring dashboards.
+
+Prerequisites
+
+Before setting up this project, make sure you have the following:
+
+AWS Infrastructure
+
+- AWS account
+- EC2 instances running Ubuntu Linux
+- Security Groups configured for required application and monitoring ports
+- SSH access to EC2 instances
+
+DevOps Tools
+
+- Git and GitHub
+- Jenkins
+- Docker
+- SonarQube
+- Trivy for security scanning
+- Kubernetes
+- kubectl
+- Prometheus
+- Grafana
+- Node Exporter
+
+Application Requirements
+
+- Node.js
+- npm
+- Docker Hub account
+
+Basic Knowledge
+
+- Linux commands
+- Git and GitHub
+- CI/CD pipeline concepts
+- Docker and containerization
+- Kubernetes deployment and services
+- Monitoring and observability
